@@ -2,7 +2,6 @@
 
 import sys
 sys.path.append("./")
-#sys.path.append("./policyopt/")
 
 import policyopt
 from policyopt.autodiff import *
@@ -16,6 +15,12 @@ import torch
 
 def main():
   env_id = "PongNoFrameskip-v4"
+
+  # This option controls the number of recent frames to stack in an
+  # observation.
+  #HISTORY_LEN = 1
+  HISTORY_LEN = 4
+  print("DEBUG: config: history len:", HISTORY_LEN)
 
   # This option controls the Pong occlusion setup from the paper.
   PREPROC_PONG_MASK = False
@@ -36,12 +41,6 @@ def main():
   #FRAME_REPEAT = False
   ##FRAME_REPEAT = True
   #print("DEBUG: config: frame repeat:", FRAME_REPEAT)
-
-  # This option controls the number of recent frames to stack in an
-  # observation.
-  #HISTORY_LEN = 1
-  HISTORY_LEN = 4
-  print("DEBUG: config: history len:", HISTORY_LEN)
 
   env = gym.make(env_id)
   h = env.seed()
