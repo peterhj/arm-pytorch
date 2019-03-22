@@ -15,7 +15,7 @@ def main():
     task.sh("apt-get install -y libglib2.0-0 libsm6 libxrender1 libfontconfig1 libxext6")
     task.sh("pip3 install numpy")
     task.sh("pip3 install opencv-python")
-    task.sh("pip3 install /cache/torch-0.3.1-cp35-cp35m-linux_x86_64.whl")
+    task.sh("pip3 install /mutable_cache/torch-0.3.1-cp35-cp35m-linux_x86_64.whl")
     task.sh("cd gym")
     task.sh("pip3 install .[atari]")
     task.sh("cd ..")
