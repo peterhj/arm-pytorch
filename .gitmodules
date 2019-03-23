@@ -1,3 +1,9 @@
 [submodule "gym"]
 	path = gym
 	url = https://github.com/openai/gym.git
+[submodule "doom-py"]
+	path = doom-py
+	url = https://github.com/peterhj/doom-py.git
+[submodule "gym-doom"]
+	path = gym-doom
+	url = https://github.com/peterhj/gym-doom.git

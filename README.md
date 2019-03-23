@@ -17,3 +17,11 @@ Tested on python 3.5, not sure about 2.x compat.
 
 Run `python ./train_atari_arm.py` with the gym Atari envs installed.
 See the comments in `train_atari_arm.py` for the various options.
+
+## Doom
+
+Similarly, run `python ./train_doom_arm.py`. ViZDoom experiments use
+slightly customized versions of doom-py and the envs by @ppaquette:
+
+    https://github.com/peterhj/doom-py/tree/peterhj-depth
+    https://github.com/peterhj/gym-doom/tree/peterhj-rllab
