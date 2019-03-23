@@ -22,7 +22,7 @@ def main():
     task.sh("pip3 install .")
     task.sh("cd ../gym-doom")
     task.sh("pip3 install .")
-    tash.sh("cd ..")
+    task.sh("cd ..")
 
     # Do the training (will take some hours).
     task.sh("python3 ./train_doom_arm.py")
