@@ -8,7 +8,7 @@ from policyopt.autodiff import *
 from policyopt.discrete_arm import DiscreteARM
 from policyopt.functional import build_doom_84x84_fn, build_doom_44x44_fn, build_doom_20x20_fn, build_doom_1x1_fn
 from policyopt.utils import *
-from policyopt.wrapper import wrap_doom_84x84, wrap_doom_84x84_v2, wrap_doom_44x44_v2, wrap_doom_20x20_v2, wrap_doom_1x1_v2
+from policyopt.wrapper_doom import wrap_doom_84x84, wrap_doom_84x84_v2, wrap_doom_44x44_v2, wrap_doom_20x20_v2, wrap_doom_1x1_v2
 
 import gym
 import ppaquette_gym_doom
