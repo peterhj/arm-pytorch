@@ -12,7 +12,7 @@ def main():
     task.require_cuda("8.0")
 
     # Install prerequisites.
-    task.sh("apt-get install -y libglib2.0-0 libsm6 libxrender1 libfontconfig1 libxext6 cmake libboost-all-dev libsdl2-dev python3-dev")
+    task.sh("apt-get install -y libglib2.0-0 libsm6 libxrender1 libfontconfig1 libxext6 cmake libboost-all-dev libsdl2-dev python3-dev wget unzip")
     task.sh("pip3 install numpy")
     task.sh("pip3 install opencv-python")
     task.sh("pip3 install /mutable_cache/torch-0.3.1-cp35-cp35m-linux_x86_64.whl")
