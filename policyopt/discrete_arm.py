@@ -66,7 +66,8 @@ class DiscreteARMPolicy(object):
     regrets_var = torch.clamp(self._ccq_fn(obs) - self._v_fn(obs), min=0.0)
     regrets = regrets_var.data.cpu().numpy()
     sum_regrets = np.sum(regrets, axis=1, keepdims=True)
-    act_dist = regrets / sum_regrets
+    with np.errstate(invalid="ignore"):
+      act_dist = regrets / sum_regrets
     assert len(act_dist.shape) == 2
     if cond_act_idx is not None:
       act_probs = []
