@@ -162,8 +162,12 @@ def main():
   total_step_count = 0
   while total_step_count <= total_step_limit:
     total_step_count += arm.step(env)
+  print("DEBUG: training finished")
+  sys.stdout.flush()
 
   env.close()
+  print("DEBUG: closed env")
+  sys.stdout.flush()
 
 if __name__ == "__main__":
   main()
