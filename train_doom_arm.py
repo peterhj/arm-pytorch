@@ -136,24 +136,6 @@ def main():
     tg_v_param_vars, tg_v_init_fns, tg_v_fn = build_doom_84x84_fn(input_chan, 1)
     v_param_vars, v_init_fns, v_fn = build_doom_84x84_fn(input_chan, 1)
     ccq_param_vars, ccq_init_fns, ccq_fn = build_doom_84x84_fn(input_chan, act_dim)
-  elif IMAGE_DIM == 44:
-    prev_v_param_vars, prev_v_init_fns, prev_v_fn = build_doom_44x44_fn(input_chan, 1)
-    prev_ccq_param_vars, prev_ccq_init_fns, prev_ccq_fn = build_doom_44x44_fn(input_chan, act_dim)
-    tg_v_param_vars, tg_v_init_fns, tg_v_fn = build_doom_44x44_fn(input_chan, 1)
-    v_param_vars, v_init_fns, v_fn = build_doom_44x44_fn(input_chan, 1)
-    ccq_param_vars, ccq_init_fns, ccq_fn = build_doom_44x44_fn(input_chan, act_dim)
-  elif IMAGE_DIM == 20:
-    prev_v_param_vars, prev_v_init_fns, prev_v_fn = build_doom_20x20_fn(input_chan, 1)
-    prev_ccq_param_vars, prev_ccq_init_fns, prev_ccq_fn = build_doom_20x20_fn(input_chan, act_dim)
-    tg_v_param_vars, tg_v_init_fns, tg_v_fn = build_doom_20x20_fn(input_chan, 1)
-    v_param_vars, v_init_fns, v_fn = build_doom_20x20_fn(input_chan, 1)
-    ccq_param_vars, ccq_init_fns, ccq_fn = build_doom_20x20_fn(input_chan, act_dim)
-  elif IMAGE_DIM == 1:
-    prev_v_param_vars, prev_v_init_fns, prev_v_fn = build_doom_1x1_fn(input_chan, 1)
-    prev_ccq_param_vars, prev_ccq_init_fns, prev_ccq_fn = build_doom_1x1_fn(input_chan, act_dim)
-    tg_v_param_vars, tg_v_init_fns, tg_v_fn = build_doom_1x1_fn(input_chan, 1)
-    v_param_vars, v_init_fns, v_fn = build_doom_1x1_fn(input_chan, 1)
-    ccq_param_vars, ccq_init_fns, ccq_fn = build_doom_1x1_fn(input_chan, act_dim)
   else:
     raise NotImplementedError
   initialize_vars(prev_v_param_vars, prev_v_init_fns)
@@ -165,19 +147,25 @@ def main():
   arm = DiscreteARM(arm_cfg, batch_cfg, eval_cfg, opt_cfg)
   arm.reset(env, prev_v_param_vars, prev_v_fn, prev_ccq_param_vars, prev_ccq_fn, tg_v_param_vars, tg_v_fn, v_param_vars, v_fn, ccq_param_vars, ccq_fn)
 
-  total_step_limit = 2000000
-  #total_step_limit = 4000000
-  #total_step_limit = 6000000
-  #total_step_limit = 10000000
+  print("DEBUG: training started...")
+  sys.stdout.flush()
+  sys.stderr.flush()
+
+  total_step_limit = 500000
+  #total_step_limit = 2000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
     total_step_count += arm.step(env)
+    sys.stdout.flush()
+    sys.stderr.flush()
   print("DEBUG: training finished")
   sys.stdout.flush()
+  sys.stderr.flush()
 
   env.close()
   print("DEBUG: closed env")
   sys.stdout.flush()
+  sys.stderr.flush()
 
 if __name__ == "__main__":
   main()
