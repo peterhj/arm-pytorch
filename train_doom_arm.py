@@ -19,14 +19,20 @@ torch.set_num_threads(1)
 
 def main():
   gseed = None
-  if len(sys.argv) > 1:
-    gseed = int(sys.argv[1])
+  if len(sys.argv) > 2:
+    gseed = int(sys.argv[2])
     set_global_seeds(gseed)
   print("DEBUG: global seed:", gseed)
 
-  #env_id = "ppaquette/DoomHealthGathering-v0"
-  #env_id = "ppaquette/DoomMyWayHome-v0"
-  env_id = "ppaquette/DoomCorridor-v0"
+  if len(sys.argv) > 1:
+    env_id = sys.argv[1]
+  else:
+    #env_id = "ppaquette/DoomHealthGathering-v0"
+    #env_id = "ppaquette/DoomMyWayHome-v0"
+    env_id = "ppaquette/DoomCorridor-v0"
+  assert env_id == "ppaquette/DoomHealthGathering-v0" \
+      or env_id == "ppaquette/DoomMyWayHome-v0" \
+      or env_id == "ppaquette/DoomCorridor-v0"
 
   IMAGE_DIM = 84
   print("DEBUG: config: image dim:", IMAGE_DIM)
@@ -89,12 +95,16 @@ def main():
   act_dim = env.action_space.n
   print("DEBUG: act dim:", act_dim)
 
+  if env_id == "ppaquette/DoomMyWayHome-v0":
+    res_scale = 1.0
+  else:
+    res_scale = 0.01
   arm_cfg = {
     "num_cached_batches": 1,
     "sampling_strategy": "uniform",
     "nsteps": 5,
     "discount": 0.99,
-    "res_scale": 0.01,
+    "res_scale": res_scale,
     "initial_num_arm_iters": 3000,
     "num_arm_iters": 3000,
     "minibatch_size": 32,
