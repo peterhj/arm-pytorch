@@ -13,6 +13,8 @@ def main():
         task = gp.task(name="train doom/arm ({})".format(env_id), toolchain="python3")
         task.require_distro("ubuntu 16.04")
         task.require_cuda("8.0")
+        # NOTE: bash is now the default shell.
+        #task.require_shell("bash")
 
         # Install prerequisites.
         task.sh("apt-get install -y libglib2.0-0 libsm6 libxrender1 libfontconfig1 libxext6 cmake libboost-all-dev libsdl2-dev python3-dev wget unzip")
