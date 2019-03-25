@@ -9,7 +9,7 @@ def main():
 
     run = gp.run()
 
-    for env_id in ["ppaquette/DoomMyWayHome-v0", "ppaquette/DoomCorridor-v0"]:
+    for env_id in ["ppaquette/DoomCorridor-v0", "ppaquette/DoomMyWayHome-v0"]:
         task = gp.task(name="train doom/arm ({})".format(env_id), toolchain="python3")
         task.require_distro("ubuntu 16.04")
         task.require_cuda("8.0")
