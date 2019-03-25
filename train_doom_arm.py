@@ -70,8 +70,8 @@ def main():
   #FRAME_FLICKER = True
   print("DEBUG: config: frame flicker:", FRAME_FLICKER)
 
-  test_env = gym.make(env_id)
-  test_env.close()
+  #test_env = gym.make(env_id)
+  #test_env.close()
 
   env = gym.make(env_id)
   h = env.seed()
@@ -151,7 +151,7 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
-  total_step_limit = 500000
+  total_step_limit = 250000
   #total_step_limit = 2000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
@@ -162,10 +162,10 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
-  env.close()
-  print("DEBUG: closed env")
-  sys.stdout.flush()
-  sys.stderr.flush()
+  #env.close()
+  #print("DEBUG: closed env")
+  #sys.stdout.flush()
+  #sys.stderr.flush()
 
 if __name__ == "__main__":
   main()
