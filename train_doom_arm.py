@@ -151,8 +151,7 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
-  total_step_limit = 250000
-  #total_step_limit = 2000000
+  total_step_limit = 2000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
     total_step_count += arm.step(env)
@@ -162,6 +161,10 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
+  # NB: https://github.com/mwydmuch/ViZDoom/issues/123
+  # In short, the python3 bindings for vizdoom can randomly segfault when
+  # the env is closed. Not closing the env could lead to vizdoom processes
+  # left dangling, but when running docker not closing the env is fine.
   #env.close()
   #print("DEBUG: closed env")
   #sys.stdout.flush()
