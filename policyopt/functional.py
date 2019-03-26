@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.5
-
 from policyopt.autodiff import *
 
 import numpy as np

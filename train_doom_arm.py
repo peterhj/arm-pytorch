@@ -1,5 +1,3 @@
-#!/usr/bin/env python2.7
-
 import sys
 sys.path.append("./")
 
@@ -22,7 +20,7 @@ def main():
   if len(sys.argv) > 2:
     gseed = int(sys.argv[2])
     set_global_seeds(gseed)
-  print("DEBUG: global seed:", gseed)
+  print("DEBUG: global seed: {}".format(gseed))
 
   if len(sys.argv) > 1:
     env_id = sys.argv[1]
@@ -35,47 +33,47 @@ def main():
       or env_id == "ppaquette/DoomCorridor-v0"
 
   IMAGE_DIM = 84
-  print("DEBUG: config: image dim:", IMAGE_DIM)
+  print("DEBUG: config: image dim: {}".format(IMAGE_DIM))
 
   FRAME_HISTORY = 4
   #FRAME_HISTORY = 1
-  print("DEBUG: config: frame history:", FRAME_HISTORY)
+  print("DEBUG: config: frame history: {}".format(FRAME_HISTORY))
 
   PREPROC_MASK = False
   #PREPROC_MASK = True
-  print("DEBUG: config: preproc mask:", PREPROC_MASK)
+  print("DEBUG: config: preproc mask: {}".format(PREPROC_MASK))
 
   PREPROC_MASK_BIG = False
   #PREPROC_MASK_BIG = True
-  print("DEBUG: config: preproc mask big:", PREPROC_MASK_BIG)
+  print("DEBUG: config: preproc mask big: {}".format(PREPROC_MASK_BIG))
 
   PREPROC_MASK_OUT = False
   #PREPROC_MASK_OUT = True
-  print("DEBUG: config: preproc mask out:", PREPROC_MASK_OUT)
+  print("DEBUG: config: preproc mask out: {}".format(PREPROC_MASK_OUT))
 
   ACTION_DELAY = 0
   #ACTION_DELAY = 3
   #ACTION_DELAY = 4
   #ACTION_DELAY = 10
-  print("DEBUG: config: action delay:", ACTION_DELAY)
+  print("DEBUG: config: action delay: {}".format(ACTION_DELAY))
 
   ZCLIP_FEAT = False
-  print("DEBUG: config: zclip feat:", ZCLIP_FEAT)
+  print("DEBUG: config: zclip feat: {}".format(ZCLIP_FEAT))
 
   DEPTH_FEAT = False
   #DEPTH_FEAT = True
-  print("DEBUG: config: depth feat:", DEPTH_FEAT)
+  print("DEBUG: config: depth feat: {}".format(DEPTH_FEAT))
 
   FRAME_FLICKER = False
   #FRAME_FLICKER = True
-  print("DEBUG: config: frame flicker:", FRAME_FLICKER)
+  print("DEBUG: config: frame flicker: {}".format(FRAME_FLICKER))
 
   #test_env = gym.make(env_id)
   #test_env.close()
 
   env = gym.make(env_id)
   h = env.seed()
-  print("DEBUG: env seed:", h)
+  print("DEBUG: env seed: {}".format(h))
   if IMAGE_DIM == 84:
     env = wrap_doom_84x84_v2(
         env,
@@ -93,7 +91,7 @@ def main():
   input_chan = FRAME_HISTORY * 3
   #input_chan = FRAME_HISTORY * 1   # for depth features.
   act_dim = env.action_space.n
-  print("DEBUG: act dim:", act_dim)
+  print("DEBUG: act dim: {}".format(act_dim))
 
   if env_id == "ppaquette/DoomMyWayHome-v0":
     res_scale = 1.0
@@ -151,7 +149,7 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
-  total_step_limit = 50000
+  total_step_limit = 250000
   #total_step_limit = 2000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
@@ -166,10 +164,10 @@ def main():
   # In short, the python3 bindings for vizdoom can randomly segfault when
   # the env is closed. Not closing the env could lead to vizdoom processes
   # left dangling, but when running docker not closing the env is fine.
-  #env.close()
-  #print("DEBUG: closed env")
-  #sys.stdout.flush()
-  #sys.stderr.flush()
+  env.close()
+  print("DEBUG: closed env")
+  sys.stdout.flush()
+  sys.stderr.flush()
 
 if __name__ == "__main__":
   main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.5
-
 import sys
 sys.path.append("./")
 
@@ -20,31 +18,31 @@ def main():
   # observation.
   #HISTORY_LEN = 1
   HISTORY_LEN = 4
-  print("DEBUG: config: history len:", HISTORY_LEN)
+  print("DEBUG: config: history len: {}".format(HISTORY_LEN))
 
   # This option controls the Pong occlusion setup from the paper.
   PREPROC_PONG_MASK = False
   #PREPROC_PONG_MASK = True
-  print("DEBUG: config: preproc pong mask:", PREPROC_PONG_MASK)
+  print("DEBUG: config: preproc pong mask: {}".format(PREPROC_PONG_MASK))
 
   # Unused (remains for backward compatibility).
   PREPROC_BREAKOUT_MASK = False
   #PREPROC_BREAKOUT_MASK = True
-  print("DEBUG: config: preproc breakout mask:", PREPROC_BREAKOUT_MASK)
+  print("DEBUG: config: preproc breakout mask: {}".format(PREPROC_BREAKOUT_MASK))
 
   # Unused (remains for backward compatibility).
   FRAME_FLICKER = False
   #FRAME_FLICKER = True
-  print("DEBUG: config: frame flicker:", FRAME_FLICKER)
+  print("DEBUG: config: frame flicker: {}".format(FRAME_FLICKER))
 
   # Unused.
   #FRAME_REPEAT = False
   ##FRAME_REPEAT = True
-  #print("DEBUG: config: frame repeat:", FRAME_REPEAT)
+  #print("DEBUG: config: frame repeat: {}".format(FRAME_REPEAT))
 
   env = gym.make(env_id)
   h = env.seed()
-  print("DEBUG: config: env seed:", h)
+  print("DEBUG: config: env seed: {}".format(h))
   env = wrap_atari_84x84_v2(
       env,
       preproc_pong_mask=PREPROC_PONG_MASK,
@@ -77,13 +75,13 @@ def main():
     # this rate.
     "arm_target_step_size": 0.01,
   }
-  print("DEBUG: arm cfg:", arm_cfg)
+  print("DEBUG: arm cfg: {}".format(arm_cfg))
   # Batch configuration, main setting is the number of transitions per batch.
   batch_cfg = {
     "sample_size": 12500,
     "num_trajs": None,
   }
-  print("DEBUG: batch cfg:", batch_cfg)
+  print("DEBUG: batch cfg: {}".format(batch_cfg))
   # Unused (remains for backward compatibility).
   eval_cfg = {
     "sample_size": None,
@@ -98,7 +96,7 @@ def main():
     "decay_rate_2": 0.001,
     "epsilon": 1.0e-8,
   }
-  print("DEBUG: opt cfg:", opt_cfg)
+  print("DEBUG: opt cfg: {}".format(opt_cfg))
 
   prev_v_param_vars, prev_v_init_fns, prev_v_fn = build_atari_84x84_fn(input_chan, 1)
   initialize_vars(prev_v_param_vars, prev_v_init_fns)

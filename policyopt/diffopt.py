@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.5
-
 from policyopt.autodiff import *
 
 import numpy as np
@@ -67,7 +65,7 @@ class AdamOptimizer(object):
     if dtype is None:
       dtype = param_vars[0].data.type()
     self._dim = flat_count_vars(param_vars)
-    print("DEBUG: adam: dim:", self._dim)
+    print("DEBUG: adam: dim: {}".format(self._dim))
     self._iter_ct = 0
     self._loss = torch.zeros(1).type(dtype)
     self._param = torch.zeros(self._dim).type(dtype)

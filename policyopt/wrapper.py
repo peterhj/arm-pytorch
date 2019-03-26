@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.5
-
 import cv2
 import gym
 import numpy as np

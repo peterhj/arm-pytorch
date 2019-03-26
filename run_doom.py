@@ -4,7 +4,7 @@ def main():
     mut_cache = gp.mutable_cache()
     mut_cache.fetch_once(
         #"https://download.pytorch.org/whl/cu80/torch-0.3.1-cp35-cp35m-linux_x86_64.whl"
-        "https://download.pytorch.org/whl/cu80/torch-0.3.1-cp27-cp27m-linux_x86_64.whl"
+        "https://download.pytorch.org/whl/cu80/torch-0.3.1-cp27-cp27mu-linux_x86_64.whl"
     )
     mut_cache.out()
 
@@ -21,7 +21,8 @@ def main():
         task.sh("apt-get install -y libglib2.0-0 libsm6 libxrender1 libfontconfig1 libxext6 cmake libboost-all-dev libsdl2-dev wget unzip")
         task.sh("pip install numpy")
         task.sh("pip install opencv-python")
-        task.sh("pip install /mutable_cache/torch-0.3.1-cp27-cp27m-linux_x86_64.whl")
+        #task.sh("pip install /mutable_cache/torch-0.3.1-cp35-cp35m-linux_x86_64.whl")
+        task.sh("pip install /mutable_cache/torch-0.3.1-cp27-cp27mu-linux_x86_64.whl")
         task.sh("cd gym")
         task.sh("pip install .[atari]")
         task.sh("cd ../doom-py")

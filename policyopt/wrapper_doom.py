@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.5
-
 from policyopt.wrapper import *
 
 import cv2

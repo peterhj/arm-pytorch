@@ -7,7 +7,7 @@ This contains an implementation of ARM for discrete action space envs
 
 ## Requirements
 
-Tested with python 3.5.
+Tested with python 2.7 and 3.5 (on ubuntu 16.04 + cuda 8.0 via nvidia-docker).
 
 - gym commit [0c91364cd4a7ea70f242a28b85c3aea2d74aa35a](https://github.com/openai/gym/tree/0c91364cd4a7ea70f242a28b85c3aea2d74aa35a)
 - numpy 1.13, 1.14 or newer

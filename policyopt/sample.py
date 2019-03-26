@@ -1,13 +1,11 @@
-#!/usr/bin/env python3.5
-
 from policyopt.autodiff import *
+from policyopt.utils import perf_counter
 
 import numpy as np
 import torch
 import torch.cuda
 
 from collections import deque
-import time
 
 class SampleTransition(object):
   def __init__(self):
@@ -38,7 +36,7 @@ class SampleTraj(object):
 
   def reset(self):
     self.init_obs = None
-    self.steps.clear()
+    self.steps[:] = []
 
   def init(self, init_obs):
     self.init_obs = init_obs
@@ -108,14 +106,14 @@ class SampleBatch(object):
     else:
       label = "batch"
     print("DEBUG: {}: resampling policy...".format(label))
-    batch_start_t = time.perf_counter()
+    batch_start_t = perf_counter()
     self._step_ct = 0
-    self.trajs.clear()
+    self.trajs[:] = []
     avg_return = 0.0
     max_return = -float("inf")
     min_return = float("inf")
     while self._step_ct < cfg["sample_size"]:
-      ep_start_t = time.perf_counter()
+      ep_start_t = perf_counter()
       traj = SampleTraj()
       obs = env.reset()
       traj.init(obs)
@@ -133,25 +131,25 @@ class SampleBatch(object):
       avg_return += 1.0 / float(len(self.trajs)) * (traj.sum_return() - avg_return)
       max_return = max(max_return, traj.sum_return())
       min_return = min(min_return, traj.sum_return())
-      ep_lap_t = time.perf_counter()
+      ep_lap_t = perf_counter()
       ep_elapsed_s = float(ep_lap_t - ep_start_t)
       elapsed_s = float(ep_lap_t - batch_start_t)
       print("DEBUG: {}:   trajs: {} ret: {:.3f} steps: {} batch steps: {} elapsed: {:.3f} batch elapsed: {:.3f}".format(
           label, len(self.trajs), traj.sum_return(), traj.step_count(), self._step_ct, ep_elapsed_s, elapsed_s))
-    #elapsed_s = float(time.perf_counter() - batch_start_t)
+    #elapsed_s = float(perf_counter() - batch_start_t)
     print("DEBUG: {}: trajs: {} steps: {} avg ret: {:.3f} max ret: {:.3f} min ret: {:.3f} elapsed: {:.3f}".format(
         label, self.traj_count(), self.step_count(), avg_return, max_return, min_return, elapsed_s))
 
   def resample_categorical(self, cfg, env, cat_policy):
     print("DEBUG: batch: resampling categorical policy...")
-    batch_start_t = time.perf_counter()
+    batch_start_t = perf_counter()
     self._step_ct = 0
-    self.trajs.clear()
+    self.trajs[:] = []
     avg_return = 0.0
     max_return = -float("inf")
     min_return = float("inf")
     while self._step_ct < cfg["sample_size"]:
-      ep_start_t = time.perf_counter()
+      ep_start_t = perf_counter()
       traj = SampleTraj()
       obs = env.reset()
       traj.init(obs)
@@ -169,18 +167,18 @@ class SampleBatch(object):
       avg_return += 1.0 / float(len(self.trajs)) * (traj.sum_return() - avg_return)
       max_return = max(max_return, traj.sum_return())
       min_return = min(min_return, traj.sum_return())
-      ep_lap_t = time.perf_counter()
+      ep_lap_t = perf_counter()
       ep_elapsed_s = float(ep_lap_t - ep_start_t)
       elapsed_s = float(ep_lap_t - batch_start_t)
       print("DEBUG: batch:   trajs: {} ret: {:.3f} steps: {} batch steps: {} elapsed: {:.3f} batch elapsed: {:.3f}".format(
           len(self.trajs), traj.sum_return(), traj.step_count(), self._step_ct, ep_elapsed_s, elapsed_s))
-    #elapsed_s = float(time.perf_counter() - batch_start_t)
+    #elapsed_s = float(perf_counter() - batch_start_t)
     print("DEBUG: batch: trajs: {} steps: {} avg ret: {:.3f} max ret: {:.3f} min ret: {:.3f} elapsed: {:.3f}".format(
         self.traj_count(), self.step_count(), avg_return, max_return, min_return, elapsed_s))
 
   def old_resample(self, cfg, env, policy):
     self._step_ct = 0
-    self.trajs.clear()
+    self.trajs[:] = []
     while self._step_ct < cfg["sample_size"]:
       traj = SampleTraj()
       obs = env.reset()
@@ -209,9 +207,9 @@ class SampleBatch(object):
           for j in range(len(chunk_ent)):
             kp = chunk_k[j]
             traj.steps[kp].response += entropy_scale * float(chunk_ent[j])
-          chunk_k.clear()
-          chunk_obs.clear()
-          chunk_act.clear()
+          chunk_k[:] = []
+          chunk_obs[:] = []
+          chunk_act[:] = []
         chunk_k.append(k)
         chunk_act.append(traj.steps[k].action)
         if k == 0:
@@ -243,8 +241,8 @@ class SampleBatch(object):
               traj.init_est_val = float(chunk_v[j])
             else:
               traj.steps[kp].next_est_val = float(chunk_v[j])
-          chunk_k.clear()
-          chunk_obs.clear()
+          chunk_k[:] = []
+          chunk_obs[:] = []
         chunk_k.append(k)
         chunk_obs.append(traj.steps[k].next_obs)
       if len(chunk_obs) > 0:
@@ -296,7 +294,7 @@ class SampleBatch(object):
           chunk_kl = chunk_kl.data.cpu().numpy()
           for j in range(len(chunk_kl)):
             all_kl.append(chunk_kl[j])
-          chunk_obs.clear()
+          chunk_obs[:] = []
         chunk_obs.append(traj.steps[k].next_obs)
       if len(chunk_obs) > 0:
         old_mean, old_logstd = old_pol_dist_fn(const_var(torch.from_numpy(np.array(chunk_obs))))
@@ -391,8 +389,8 @@ class SampleBatch(object):
 
     torch.cuda.synchronize()
 
-    print("DEBUG: obs buffer size:", obs_buffer.size())
-    print("DEBUG: act buffer size:", act_buffer.size())
+    print("DEBUG: obs buffer size: {}".format(obs_buffer.size()))
+    print("DEBUG: act buffer size: {}".format(act_buffer.size()))
 
     del obs_buffer_h
     del act_buffer_h
@@ -469,8 +467,8 @@ class SampleBatch(object):
     self.end_buffer = end_buffer_h
     self.done_buffer = done_buffer_h
 
-    print("DEBUG: obs buffer size:", self.obs_buffer.size())
-    print("DEBUG: act idx buf size:", self.act_idx_buffer.size())
+    print("DEBUG: obs buffer size: {}".format(self.obs_buffer.size()))
+    print("DEBUG: act idx buf size: {}".format(self.act_idx_buffer.size()))
 
   def reweight_categorical(self, online_policy, clip_weight=1.0, chunk_size=32):
     weight_buffer_h = torch.FloatTensor(self.xbatch_size)
@@ -710,7 +708,7 @@ class SampleBatchCache(object):
 
       torch.cuda.synchronize()
 
-      print("DEBUG: cache obs buffer size:", obs_buffer.size())
+      print("DEBUG: cache obs buffer size: {}".format(obs_buffer.size()))
 
       self.obs_buffer = obs_buffer
       self.act_idx_buffer = act_idx_buffer

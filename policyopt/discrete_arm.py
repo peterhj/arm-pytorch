@@ -1,9 +1,8 @@
-#!/usr/bin/env python3.5
-
 from policyopt.autodiff import *
 from policyopt.diffopt import *
 from policyopt.policy import *
 from policyopt.sample import *
+from policyopt.utils import perf_counter
 
 import gym
 import numpy as np
@@ -12,7 +11,6 @@ import torch.cuda
 import torch.nn.functional
 
 #import gc
-import time
 
 def build_lstsq_v_loss_fn(v_fn):
   def v_loss_fn(obs, target):
@@ -198,7 +196,7 @@ class DiscreteARM(object):
     avg_v_loss = torch.zeros(1).cuda()
     avg_ccq_loss = torch.zeros(1).cuda()
     last_display_iter = 0
-    last_t = time.perf_counter()
+    last_t = perf_counter()
 
     for t in range(curr_num_arm_iters):
       # TODO
@@ -241,7 +239,7 @@ class DiscreteARM(object):
 
       if (t+1) % 400 == 0 or (t+1) == curr_num_arm_iters:
         elapsed_display_iters = float(t + 1 - last_display_iter)
-        lap_t = time.perf_counter()
+        lap_t = perf_counter()
         elapsed_s = float(lap_t - last_t)
         print("DEBUG: arm:   iters: {} v loss: {:.6f} ccq loss: {:.6f} elapsed: {:.3f}".format(
             t+1,
