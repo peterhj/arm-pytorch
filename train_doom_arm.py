@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.5
+#!/usr/bin/env python2.7
 
 import sys
 sys.path.append("./")
@@ -151,7 +151,8 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
-  total_step_limit = 2000000
+  total_step_limit = 50000
+  #total_step_limit = 2000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
     total_step_count += arm.step(env)
