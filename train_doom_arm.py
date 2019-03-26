@@ -17,10 +17,16 @@ torch.set_num_threads(1)
 
 def main():
   gseed = None
-  if len(sys.argv) > 2:
-    gseed = int(sys.argv[2])
+  if len(sys.argv) > 3:
+    gseed = int(sys.argv[3])
     set_global_seeds(gseed)
   print("DEBUG: global seed: {}".format(gseed))
+
+  if len(sys.argv) > 2:
+    total_step_limit = int(sys.argv[2])
+  else:
+    total_step_limit = 2000000
+  print("DEBUG: total sim steps: {}".format(total_step_limit))
 
   if len(sys.argv) > 1:
     env_id = sys.argv[1]
@@ -31,6 +37,7 @@ def main():
   assert env_id == "ppaquette/DoomHealthGathering-v0" \
       or env_id == "ppaquette/DoomMyWayHome-v0" \
       or env_id == "ppaquette/DoomCorridor-v0"
+  print("DEBUG: env id: {}".format(env_id))
 
   IMAGE_DIM = 84
   print("DEBUG: config: image dim: {}".format(IMAGE_DIM))
@@ -149,8 +156,6 @@ def main():
   sys.stdout.flush()
   sys.stderr.flush()
 
-  total_step_limit = 250000
-  #total_step_limit = 2000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
     total_step_count += arm.step(env)

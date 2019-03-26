@@ -12,7 +12,17 @@ import gym
 import torch
 
 def main():
-  env_id = "PongNoFrameskip-v4"
+  if len(sys.argv) > 2:
+    total_step_limit = int(sys.argv[2])
+  else:
+    total_step_limit = 10000000
+  print("DEBUG: total sim steps: {}".format(total_step_limit))
+
+  if len(sys.argv) > 1:
+    env_id = sys.argv[1]
+  else:
+    env_id = "PongNoFrameskip-v4"
+  print("DEBUG: env id: {}".format(env_id))
 
   # This option controls the number of recent frames to stack in an
   # observation.
@@ -112,8 +122,6 @@ def main():
   arm = DiscreteARM(arm_cfg, batch_cfg, eval_cfg, opt_cfg)
   arm.reset(env, prev_v_param_vars, prev_v_fn, prev_ccq_param_vars, prev_ccq_fn, tg_v_param_vars, tg_v_fn, v_param_vars, v_fn, ccq_param_vars, ccq_fn)
 
-  total_step_limit = 10000000
-  #total_step_limit = 20000000
   total_step_count = 0
   while total_step_count <= total_step_limit:
     total_step_count += arm.step(env)
